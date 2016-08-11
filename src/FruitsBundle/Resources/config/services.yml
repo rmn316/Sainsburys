@@ -1,0 +1,30 @@
+services:
+#    fruits.example:
+#        class: FruitsBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+  fruits.command.get_fruits_command:
+    class: FruitsBundle\Command\GetFruitsCommand
+    arguments:
+      - '@fruits.service.get_fruits_service'
+    tags:
+      - { name: console.command }
+
+  fruits.service.get_fruits_service:
+    class: FruitsBundle\Service\GetFruitsService
+    arguments:
+      - '@fruits.service.get_fruits_content_service'
+      - '@fruits.service.get_fruit_detail_service'
+
+  fruits.service.get_fruits_content_service:
+    class: FruitsBundle\Service\GetFruitsContentService
+    arguments:
+      - '@client'
+
+  fruits.service.get_fruit_detail_service:
+    class: FruitsBundle\Service\GetFruitDetailService
+    arguments:
+      - '@fruits.service.get_fruits_content_service'
+
+  client:
+    class: Goutte\Client
